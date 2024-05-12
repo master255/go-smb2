@@ -13,10 +13,10 @@ import (
 	"sync"
 	"time"
 
-	. "github.com/hirochachacha/go-smb2/internal/erref"
-	. "github.com/hirochachacha/go-smb2/internal/smb2"
+	. "github.com/master255/go-smb2/internal/erref"
+	. "github.com/master255/go-smb2/internal/smb2"
 
-	"github.com/hirochachacha/go-smb2/internal/msrpc"
+	"github.com/master255/go-smb2/internal/msrpc"
 )
 
 // Dialer contains options for func (*Dialer) Dial.
@@ -1185,7 +1185,7 @@ func (f *File) readAt(b []byte, off int64) (n int, err error) {
 		return -1, os.ErrInvalid
 	}
 
-	maxReadSize := f.maxReadSize()
+	maxReadSize := f.MaxReadSize()
 
 	for {
 		switch {
@@ -1628,7 +1628,7 @@ func (f *File) writeAt(b []byte, off int64) (n int, err error) {
 		return 0, nil
 	}
 
-	maxWriteSize := f.maxWriteSize()
+	maxWriteSize := f.MaxWriteSize()
 
 	for {
 		switch {
@@ -1846,15 +1846,15 @@ func (f *File) ReadFrom(r io.Reader) (n int64, err error) {
 			return n, err
 		}
 
-		maxBufferSize := f.maxReadSize()
-		if maxWriteSize := f.maxWriteSize(); maxWriteSize < maxBufferSize {
+		maxBufferSize := f.MaxReadSize()
+		if maxWriteSize := f.MaxWriteSize(); maxWriteSize < maxBufferSize {
 			maxBufferSize = maxWriteSize
 		}
 
 		return copyBuffer(r, f, make([]byte, maxBufferSize))
 	}
 
-	return copyBuffer(r, f, make([]byte, f.maxWriteSize()))
+	return copyBuffer(r, f, make([]byte, f.MaxWriteSize()))
 }
 
 // WriteTo implements io.WriteTo.
@@ -1866,15 +1866,15 @@ func (f *File) WriteTo(w io.Writer) (n int64, err error) {
 			return n, err
 		}
 
-		maxBufferSize := f.maxReadSize()
-		if maxWriteSize := f.maxWriteSize(); maxWriteSize < maxBufferSize {
+		maxBufferSize := f.MaxReadSize()
+		if maxWriteSize := f.MaxWriteSize(); maxWriteSize < maxBufferSize {
 			maxBufferSize = maxWriteSize
 		}
 
 		return copyBuffer(f, w, make([]byte, maxBufferSize))
 	}
 
-	return copyBuffer(f, w, make([]byte, f.maxReadSize()))
+	return copyBuffer(f, w, make([]byte, f.MaxReadSize()))
 }
 
 func (f *File) WriteString(s string) (n int, err error) {
