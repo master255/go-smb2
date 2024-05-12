@@ -1141,7 +1141,7 @@ func (f *File) ReadAt(b []byte, off int64) (n int, err error) {
 const winMaxPayloadSize = 1024 * 1024 // windows system don't accept more than 1M bytes request even though they tell us maxXXXSize > 1M
 const singleCreditMaxPayloadSize = 64 * 1024
 
-func (f *File) maxReadSize() int {
+func (f *File) MaxReadSize() int {
 	size := int(f.fs.maxReadSize)
 	if size > winMaxPayloadSize {
 		size = winMaxPayloadSize
@@ -1154,7 +1154,7 @@ func (f *File) maxReadSize() int {
 	return size
 }
 
-func (f *File) maxWriteSize() int {
+func (f *File) MaxWriteSize() int {
 	size := int(f.fs.maxWriteSize)
 	if size > winMaxPayloadSize {
 		size = winMaxPayloadSize
