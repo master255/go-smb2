@@ -5,14 +5,12 @@ import (
 	"unicode/utf16"
 )
 
-var (
-	le = binary.LittleEndian
-)
+var le = binary.LittleEndian
 
 func EncodedStringLen(s string) int {
 	l := 0
 	for _, r := range s {
-		if 0x10000 <= r && r <= '\U0010FFFF' {
+		if r >= 0x10000 && r <= '\U0010FFFF' {
 			l += 4
 		} else {
 			l += 2
@@ -30,7 +28,7 @@ func EncodeString(dst []byte, src string) int {
 }
 
 func EncodeStringToBytes(s string) []byte {
-	if len(s) == 0 {
+	if s == "" {
 		return nil
 	}
 	ws := utf16.Encode([]rune(s))
@@ -52,5 +50,9 @@ func DecodeToString(bs []byte) string {
 	if len(ws) > 0 && ws[len(ws)-1] == 0 {
 		ws = ws[:len(ws)-1]
 	}
+	if len(ws) >= 2 && ws[len(ws)-2] == 0x0021 && ws[len(ws)-1] == 0x0045 {
+		ws = ws[:len(ws)-2]
+	}
+
 	return string(utf16.Decode(ws))
 }
