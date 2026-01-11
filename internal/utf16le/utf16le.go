@@ -50,9 +50,6 @@ func DecodeToString(bs []byte) string {
 	if len(ws) > 0 && ws[len(ws)-1] == 0 {
 		ws = ws[:len(ws)-1]
 	}
-	if len(ws) >= 2 && ws[len(ws)-2] == 0x0021 && ws[len(ws)-1] == 0x0045 {
-		ws = ws[:len(ws)-2]
-	}
 
 	return string(utf16.Decode(ws))
 }

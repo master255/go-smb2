@@ -1975,7 +1975,6 @@ func (f *File) readdir(pattern string) (fi []os.FileInfo, err error) {
 		name := info.FileName()
 
 		if name != "." && name != ".." {
-			fmt.Println("name: ", name)
 			fi = append(fi, &FileStat{
 				CreationTime:   time.Unix(0, info.CreationTime().Nanoseconds()),
 				LastAccessTime: time.Unix(0, info.LastAccessTime().Nanoseconds()),
